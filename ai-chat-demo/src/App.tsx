@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ChatMessage } from './types/chat'
 import ChatMessageList from './components/ChatMessageList'
+import ChatInput from './components/ChatInput'
 
 const App: React.FC = () => {
   // 全局状态：消息列表
@@ -14,6 +15,11 @@ const App: React.FC = () => {
   // 全局状态：是否正在加载AI回复
   const [isLoading, setIsLoading] = useState(false)
 
+  // 处理发送消息
+  const handleSend = (content: string) => {
+    console.log(content);
+
+  }
   return (
     <>
       {/* 外层全屏容器：纵向 flex 布局 */}
@@ -39,6 +45,9 @@ const App: React.FC = () => {
 
         {/* 消息列表组件：把全局状态通过 props 传下去 */}
         < ChatMessageList messages={messages} loading={isLoading} />
+
+        {/* 输入框 */}
+        <ChatInput loading={isLoading} onSend={handleSend} />
       </div >
     </>
   )

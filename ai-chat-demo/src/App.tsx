@@ -17,8 +17,30 @@ const App: React.FC = () => {
 
   // 处理发送消息
   const handleSend = (content: string) => {
-    console.log(content);
-
+    // console.log(content);
+    // 1.构造用户消息
+    const userMsg: ChatMessage = {
+      id: Date.now(),
+      role: 'user',
+      content
+    }
+    // 2.追加到消息列表
+    setMessages(prev => [...prev, userMsg])
+    // 3.设置加载状态
+    setIsLoading(true)
+    // 4.模拟异步请求AI回复
+    setTimeout(() => {
+      // 5.构造AI回复消息
+      const aiMsg: ChatMessage = {
+        id: Date.now(),
+        role: 'assistant',
+        content
+      }
+      // 6.追加到消息列表
+      setMessages(prev => [...prev, aiMsg])
+      // 7.取消加载状态
+      setIsLoading(false)
+    }, 1000)
   }
   return (
     <>

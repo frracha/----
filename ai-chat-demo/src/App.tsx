@@ -34,7 +34,7 @@ const App: React.FC = () => {
       const aiMsg: ChatMessage = {
         id: Date.now(),
         role: 'assistant',
-        content
+        content: `这是AI的回复：${content}`
       }
       // 6.追加到消息列表
       setMessages(prev => [...prev, aiMsg])

@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react'
 import ChatMessageItem from './ChatMessageItem'
 import { ChatMessage } from '../types/chat'
+import './ChatMessageList.css'
 
 // 2.定义组件接受的属性
 interface Props {
@@ -22,23 +23,22 @@ const ChatMessageList: React.FC<Props> = ({ messages, loading }) => {
     // 6.渲染页面
     return (
 
-        <div style={{ flex: 1, overflowY: 'auto', padding: '20px', backgroundColor: '#fafafa' }}>
+        <div className="chat-list">
             {/* 遍历消息列表 渲染每条消息气泡 */}
             {messages.map(msg => (
                 <ChatMessageItem key={msg.id} message={msg} />
             ))}
 
             {/* 条件渲染：加载中时显示提示 */}
-            {loading && (<div style={{ display: 'flex', marginBottom: '12px' }}>
-                <div style={{ padding: '10px 14px', borderRadius: '12px', backgroundColor: '#f5f5f5', fontSize: '14px', color: '#666' }}>正在思考中...</div>
-            </div>)}
+            {loading && (
+                <div className="chat-loading">正在思考中...</div>
+            )}
 
             {/* 滚动锚点：标记列表最底部 */}
             <div ref={bottomRef} />
         </div>
 
     )
-
 
 
 }

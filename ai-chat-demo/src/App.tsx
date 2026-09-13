@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { ChatMessage } from './types/chat'
 import ChatMessageList from './components/ChatMessageList'
 import ChatInput from './components/ChatInput'
+import './App.css'
 
 const App: React.FC = () => {
   // 全局状态：消息列表
@@ -45,22 +46,10 @@ const App: React.FC = () => {
   return (
     <>
       {/* 外层全屏容器：纵向 flex 布局 */}
-      < div style={{
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        maxWidth: '800px',
-        margin: '0 auto',
-        border: '1px solid #e8e8e8'
-      }
-      }>
+      <div className="app-container">
         {/* 顶部标题栏 */}
-        < div style={{
-          padding: '16px 20px',
-          borderBottom: '1px solid #e8e8e8',
-          backgroundColor: '#fff'
-        }}>
-          <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600 }}>
+        <div className="app-header">
+          <h2 className="app-title">
             AI智能对话助手
           </h2>
         </div >

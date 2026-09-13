@@ -1,0 +1,23 @@
+/* 外层全屏容器：纵向 flex 布局 */
+.app-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid #e8e8e8
+}
+
+/* 顶部标题栏 */
+.app-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #e8e8e8;
+    background-color: #fff;
+}
+
+/* 标题栏里的 h2 */
+.app-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600
+}

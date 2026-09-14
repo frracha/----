@@ -1,0 +1,39 @@
+/* 外层：消息容器，控制整条的对齐和间距 */
+.chat-message-item {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+/* 外层状态：用户消息 → 靠右 */
+.chat-message-item.user {
+    justify-content: flex-end;
+}
+
+/* 外层状态：助手消息 → 靠左 */
+.chat-message-item.assistant {
+    justify-content: flex-start;
+}
+
+/* 内层：消息气泡基础样式 */
+.chat-message-bubble {
+    max-width: 70%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+/* 内层状态：用户气泡 → 蓝底白字 */
+.chat-message-bubble.user {
+    background-color: #1677ff;
+    color: #fff;
+}
+
+/* 内层状态：助手气泡 → 灰底黑字 */
+.chat-message-bubble.assistant {
+    background-color: #f5f5f5;
+    color: #333;
+}

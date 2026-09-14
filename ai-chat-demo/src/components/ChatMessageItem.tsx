@@ -1,28 +1,17 @@
-
 import { ChatMessage } from '../types/chat';
+import './ChatMessageItem.css'
 
 interface Props {
     message: ChatMessage;
 }
 
 const ChatMessageItem: React.FC<Props> = ({ message }) => {
-    const isUser = message.role === 'user'
+    const role = message.role
     return (
-        <div style={{
-            display: 'flex',
-            justifyContent: isUser ? 'flex-end' : 'flex-start',
-            marginBottom: '12px'
-        }}>
-            <div style={{
-                maxWidth: '70%',
-                padding: '10px 14px',
-                borderRadius: '12px',
-                fontSize: '14px',
-                lineHeight: 1.5,
-                whiteSpace: 'pre-wrap',
-                backgroundColor: isUser ? '#1677ff' : '#f5f5f5',
-                color: isUser ? 'white' : '#333'
-            }}>
+        // 用模板字符串拼接类名：`基础类 + 状态类`
+        <div className={`chat-message-item ${role}`}
+        >
+            <div className={`chat-message-bubble ${role}`}>
                 {message.content}
             </div>
         </div>

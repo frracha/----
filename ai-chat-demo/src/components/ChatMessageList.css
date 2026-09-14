@@ -1,13 +1,17 @@
 /* 列表容器 */
 .chat-list {
     flex: 1;
+    /* 内容没有超出元素高度时：没有滚动条，和正常一样内容超出元素高度时：在元素内部出现垂直滚动条，元素自身的高度保持不变，内容在内部滚动。*/
     overflow-y: auto;
     padding: 20px;
     background-color: #fafafa;
 }
 
-/* 底部加载提示 */
+/* 加载提示外层：占满整行，左对齐，和助手消息结构一致 */
 .chat-loading {
+    /* 明确占满整行 */
+    /* Flex 容器默认会把子元素拉满宽度，但显式加上 `width: 100%`，意图更明确，也能避免后续布局变化导致的对齐问题 */
+    width: 100%;
     /* 默认是左对齐 */
     display: flex;
     /* 和助手消息对齐是没问题的，但建议补全对齐属性，避免不同浏览器的默认差异 */
@@ -16,6 +20,12 @@
     /* 新增：垂直居中 */
     align-items: center;
     margin-bottom: 12px;
+}
+
+/* 加载提示气泡：和助手气泡样式统一，背景色写在这里 */
+.chat-loading-text {
+    /* 解决加载提示框变长： Flex 容器的默认拉伸行为align-items: stretch;`.chat-loading` 元素，作为 `.chat-list` 的直接子元素，默认会被横向拉满整个列表的宽度；*/
+    max-width: 70%;
     padding: 10px 14px;
     border-radius: 12px;
     background-color: #f5f5f5;

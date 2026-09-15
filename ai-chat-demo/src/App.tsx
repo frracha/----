@@ -3,6 +3,7 @@ import { ChatMessage } from './types/chat'
 import ChatMessageList from './components/ChatMessageList'
 import ChatInput from './components/ChatInput'
 import './App.css'
+import { sendMessage } from './services/chat'
 
 const App: React.FC = () => {
   // 全局状态：消息列表
@@ -17,7 +18,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   // 处理发送消息
-  const handleSend = (content: string) => {
+  const handleSend = async (content: string) => {
     // console.log(content);
     // 1.构造用户消息
     const userMsg: ChatMessage = {
@@ -25,23 +26,32 @@ const App: React.FC = () => {
       role: 'user',
       content
     }
-    // 2.追加到消息列表
-    setMessages(prev => [...prev, userMsg])
-    // 3.设置加载状态
+    // 2.先算出追加用户消息的完整列表
+    const newMessages = [...messages, userMsg]
+    // 3.更新页面 立刻显示用户发的消息
+    setMessages(newMessages)
+    // 4.设置加载状态
     setIsLoading(true)
-    // 4.模拟异步请求AI回复
-    setTimeout(() => {
-      // 5.构造AI回复消息
+    try {
+      // 5.调用服务，传入完整消息列表
+      const response = await sendMessage({
+        messages: newMessages
+      });
+      // 6.构造AI回复消息
       const aiMsg: ChatMessage = {
         id: Date.now(),
         role: 'assistant',
-        content: `这是AI的回复：${content}`
+        content: response.content
       }
-      // 6.追加到消息列表
+      // 7.追加到消息列表
       setMessages(prev => [...prev, aiMsg])
-      // 7.取消加载状态
+    } catch (error) {
+      // 错误处理：真实接口会用到，模拟版暂时不会触发
+      console.error("发送失败", error)
+    } finally {
+      // 8.无论成功失败，都取消加载状态
       setIsLoading(false)
-    }, 1000)
+    }
   }
   return (
     <>

@@ -17,9 +17,14 @@ const App: React.FC = () => {
   // 全局状态：是否正在加载AI回复
   const [isLoading, setIsLoading] = useState(false)
 
+  // 新增错误提示
+  const [errorMsg, setErrorMsg] = useState('')
+
   // 处理发送消息
   const handleSend = async (content: string) => {
     // console.log(content);
+    // 发送新消息 清空旧的错误消息
+    setErrorMsg('')
     // 1.构造用户消息
     const userMsg: ChatMessage = {
       id: Date.now(),
@@ -48,6 +53,8 @@ const App: React.FC = () => {
     } catch (error) {
       // 错误处理：真实接口会用到，模拟版暂时不会触发
       console.error("发送失败", error)
+      // 捕获到错误 更新错误state
+      setErrorMsg('消息发送失败，请稍后重试')
     } finally {
       // 8.无论成功失败，都取消加载状态
       setIsLoading(false)
@@ -66,6 +73,9 @@ const App: React.FC = () => {
 
         {/* 消息列表组件：把全局状态通过 props 传下去 */}
         < ChatMessageList messages={messages} loading={isLoading} />
+
+        {/* 错误消息提示 */}
+        {errorMsg && <div style={{ color: 'red', textAlign: 'center', padding: '4px' }}>{errorMsg}</div>}
 
         {/* 输入框 */}
         <ChatInput loading={isLoading} onSend={handleSend} />

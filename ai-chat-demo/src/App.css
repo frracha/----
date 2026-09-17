@@ -13,6 +13,26 @@
     padding: 16px 20px;
     border-bottom: 1px solid #e8e8e8;
     background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 顶部标题栏清空按钮 */
+.clear-btn {
+    border: none;
+    background-color: #1677ff;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 8px 16px;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.clear-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
 
 /* 标题栏里的 h2 */

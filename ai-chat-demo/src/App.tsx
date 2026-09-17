@@ -6,14 +6,17 @@ import './App.css'
 import { sendMessage } from './services/chat'
 
 const App: React.FC = () => {
-  // 全局状态：消息列表
-  const [messages, setMessages] = useState<ChatMessage[]>([
+  // 抽常量 定义初始消息常量，写在组件最顶部
+  const INIT_MESSAGE_LIST: ChatMessage[] = [
     {
       id: 1,
       role: 'assistant',
       content: '你好！我是AI助手，有什么可以帮你的吗？'
     }
-  ])
+  ]
+
+  // 全局状态：消息列表
+  const [messages, setMessages] = useState<ChatMessage[]>(INIT_MESSAGE_LIST)
   // 全局状态：是否正在加载AI回复
   const [isLoading, setIsLoading] = useState(false)
 
@@ -60,6 +63,15 @@ const App: React.FC = () => {
       setIsLoading(false)
     }
   }
+
+  // 清空对话函数 
+  const handleClearChat = () => {
+    // 判断AI回复加载
+    if (isLoading) return
+    // 写 `setMessages([])`（空数组） 消息列表一条消息都不剩，空白页面，连那句 “你好！我是 AI 助手” 都消失
+    setMessages(INIT_MESSAGE_LIST)
+    setErrorMsg('')
+  }
   return (
     <>
       {/* 外层全屏容器：纵向 flex 布局 */}
@@ -69,6 +81,8 @@ const App: React.FC = () => {
           <h2 className="app-title">
             AI智能对话助手
           </h2>
+          {/* 清空按钮 */}
+          <button className="clear-btn" onClick={handleClearChat} disabled={isLoading}>清空聊天</button>
         </div >
 
         {/* 消息列表组件：把全局状态通过 props 传下去 */}

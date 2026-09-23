@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# 防止执行 git 提交的时候，把存密钥的文件上传到 Github
+.env.local

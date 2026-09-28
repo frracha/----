@@ -2,6 +2,7 @@ import { ChatMessage } from "../types/chat";
 
 // 参数：消息数组 传给大模型接口
 export async function sendChatRequest(messages: ChatMessage[]) {
+
     // 1.发起fetch, await等待请求完成
     const res = await fetch('/api/ark/api/v3/chat/completions', {
         method: 'POST',

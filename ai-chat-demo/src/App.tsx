@@ -3,7 +3,7 @@ import { ChatMessage } from './types/chat'
 import ChatMessageList from './components/ChatMessageList'
 import ChatInput from './components/ChatInput'
 import './App.css'
-import { sendMessage } from './services/chat'
+import { sendChatRequest } from './services/chat'
 
 const App: React.FC = () => {
   // 抽常量 定义初始消息常量，写在组件最顶部
@@ -42,14 +42,12 @@ const App: React.FC = () => {
     setIsLoading(true)
     try {
       // 5.调用服务，传入完整消息列表
-      const response = await sendMessage({
-        messages: newMessages
-      });
+      const aiReplyText = await sendChatRequest(newMessages);
       // 6.构造AI回复消息
       const aiMsg: ChatMessage = {
         id: Date.now(),
         role: 'assistant',
-        content: response.content
+        content: aiReplyText
       }
       // 7.追加到消息列表
       setMessages(prev => [...prev, aiMsg])

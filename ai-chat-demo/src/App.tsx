@@ -25,12 +25,15 @@ const App: React.FC = () => {
 
   // 处理发送消息
   const handleSend = async (content: string) => {
-    // console.log(content);
+    // 新增：去除首尾空格 空内容直接return
+    if (!content.trim()) return
     // 发送新消息 清空旧的错误消息
     setErrorMsg('')
     // 1.构造用户消息
+    // 优化：避免AI消息id和用户id有可能重复
+    const userMsgId = Date.now()
     const userMsg: ChatMessage = {
-      id: Date.now(),
+      id: userMsgId,
       role: 'user',
       content
     }
@@ -45,17 +48,21 @@ const App: React.FC = () => {
       const aiReplyText = await sendChatRequest(newMessages);
       // 6.构造AI回复消息
       const aiMsg: ChatMessage = {
-        id: Date.now(),
+        id: userMsgId + 1,
         role: 'assistant',
         content: aiReplyText
       }
       // 7.追加到消息列表
       setMessages(prev => [...prev, aiMsg])
     } catch (error) {
-      // 错误处理：真实接口会用到，模拟版暂时不会触发
+      // 错误处理：真实接口会用到
       console.error("发送失败", error)
-      // 捕获到错误 更新错误state
-      setErrorMsg('消息发送失败，请稍后重试')
+      if (error instanceof Error) {
+        setErrorMsg(`发送失败：${error.message}`)
+      } else {
+        // 捕获到错误 更新错误state
+        setErrorMsg('消息发送失败，请稍后重试')
+      }
     } finally {
       // 8.无论成功失败，都取消加载状态
       setIsLoading(false)

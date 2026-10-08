@@ -12,7 +12,11 @@ const ChatMessageItem: React.FC<Props> = ({ message }) => {
         <div className={`chat-message-item ${role}`}
         >
             <div className={`chat-message-bubble ${role}`}>
-                {message.content}
+                {role === 'assistant' && message.content === '' ? (
+                    <span className="chat-loading-text">正在思考中...</span>
+                ) : (
+                    message.content
+                )}
             </div>
         </div>
     )

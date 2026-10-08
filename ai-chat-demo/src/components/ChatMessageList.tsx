@@ -36,12 +36,6 @@ const ChatMessageList: React.FC<Props> = ({ messages, loading }) => {
                 <ChatMessageItem key={msg.id} message={msg} />
             ))}
 
-            {/* 条件渲染：加载中时显示提示 */}
-            {loading && (<div className='chat-loading'>
-                <div className="chat-loading-text">正在思考中...</div>
-            </div>
-
-            )}
 
             {/* 滚动锚点：标记列表最底部 */}
             <div ref={bottomRef} />

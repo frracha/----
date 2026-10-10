@@ -36,4 +36,89 @@
 .chat-message-bubble.assistant {
     background-color: #f5f5f5;
     color: #333;
+    /* AI气泡内 Markdown 样式 */
+    line-height: 1.7;
+}
+
+/* 标题样式 */
+.chat-message-bubble.assistant h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 12px 0 8px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.chat-message-bubble.assistant h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 10px 0 6px;
+}
+
+.chat-message-bubble.assistant h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 8px 0 4px;
+}
+
+/* 段落 */
+.chat-message-bubble.assistant p {
+    margin: 6px 0;
+}
+
+/* 列表 */
+.chat-message-bubble.assistant ul,
+.chat-message-bubble.assistant ol {
+    margin: 6px 0;
+    padding-left: 24px;
+}
+
+.chat-message-bubble.assistant li {
+    margin: 2px 0;
+}
+
+/* 行内代码 */
+.chat-message-bubble.assistant :not(pre)>code {
+    padding: 2px 6px;
+    background: #f3f4f6;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #d93025;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* 代码块 */
+.chat-message-bubble.assistant pre {
+    margin: 8px 0;
+    padding: 12px 16px;
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+.chat-message-bubble.assistant pre code {
+    color: #d4d4d4;
+    font-size: 13px;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.6;
+}
+
+/* 引用块 */
+.chat-message-bubble.assistant blockquote {
+    margin: 8px 0;
+    padding: 8px 12px;
+    border-left: 4px solid #d1d5db;
+    background: #f9fafb;
+    color: #6b7280;
+    border-radius: 0 6px 6px 0;
+}
+
+/* 链接 */
+.chat-message-bubble.assistant a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.chat-message-bubble.assistant a:hover {
+    text-decoration: underline;
 }

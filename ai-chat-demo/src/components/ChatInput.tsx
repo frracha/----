@@ -4,9 +4,11 @@ import './ChatInput.css'
 interface Props {
     loading: boolean,
     onSend: (content: string) => void,
+    isGenerating: boolean,
+    onStop: () => void
 }
 
-const ChatInput: React.FC<Props> = ({ loading, onSend }) => {
+const ChatInput: React.FC<Props> = ({ loading, onSend, isGenerating, onStop }) => {
     // 受控组件
     const [inputValue, setInputValue] = useState('')
     // 处理发送消息
@@ -25,12 +27,22 @@ const ChatInput: React.FC<Props> = ({ loading, onSend }) => {
             handleSend(inputValue)
         }
     }
+    // 判断发送按钮是发送还是停止
+    const handleClick = () => {
+        if (isGenerating) {
+            // 生成中,点击就是停止
+            onStop()
+        } else {
+            // 非生成中,点击就是发送
+            handleSend(inputValue)
+        }
+    }
     return (
         <div className='chat-input-container'>
             <input className='chat-input' value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleKeyDown} disabled={loading} placeholder="请输入消息..." />
             {/* HTML 原生属性的铁则： 当 `<button disabled={loading}>` 时，浏览器会完全禁用这个按钮；不仅视觉上变灰，`onClick` 事件根本不会触发**，用户点击不会有任何反应；*/}
             {/* 所以 `onClick` 里的 `!loading` 判断是完全冗余的，永远走不到。 */}
-            <button className='send-btn' onClick={() => handleSend(inputValue)} disabled={loading}>发送</button>
+            <button className='send-btn' onClick={handleClick} disabled={!isGenerating && (loading || inputValue.trim() === '')}>{isGenerating ? '停止' : '发送'}</button>
         </div>
     )
 }

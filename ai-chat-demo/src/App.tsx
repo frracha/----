@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { ChatMessage } from './types/chat'
 import ChatMessageList from './components/ChatMessageList'
 import ChatInput from './components/ChatInput'
@@ -45,8 +45,15 @@ const App: React.FC = () => {
   // 全局状态：是否正在加载AI回复
   const [isLoading, setIsLoading] = useState(false)
 
-  // 新增错误提示
+  // 错误提示
   const [errorMsg, setErrorMsg] = useState('')
+
+  //存取消函数的引用
+  const cancelRef = useRef<() => void | null>(null)
+
+  // 是否正在生成中，控制按钮显示
+  const [isGenerating, setIsGenerating] = useState(false)
+
 
   // 监听messages变化 自动保存到localStorage
   useEffect(() => {
@@ -86,7 +93,7 @@ const App: React.FC = () => {
     setIsLoading(true)
     try {
       // 6.调用服务
-      await sendChatRequest(sendToApiMessages, (deltaText) => {
+      const { request, cancel } = sendChatRequest(sendToApiMessages, (deltaText) => {
         fullAiContent += deltaText
         // onDelta回调：只更新临时的streamingAiMsg，不动historyMessages
         setStreamingAiMsg(prev => {
@@ -95,20 +102,32 @@ const App: React.FC = () => {
           return { ...prev, content: prev.content + deltaText }
         })
       });
+      // 把取消方法存起来，给后面停止按钮用
+      cancelRef.current = cancel
+      // 标记开始生成，按钮变停止
+      setIsGenerating(true)
+      // 等待请求完成
+      await request
     } catch (error) {
-      // 错误处理
-      console.error("发送失败", error)
-      if (error instanceof Error) {
-        setErrorMsg(`发送失败：${error.message}`)
-      } else {
-        // 捕获到错误 更新错误state
-        setErrorMsg('消息发送失败，请稍后重试')
+      // 判断是不是用户主动取消的错误
+      const isAbort = error instanceof DOMException && error.name === 'AbortError'
+      // 只有不是主动取消的，才显示错误
+      if (!isAbort) {
+        if (error instanceof Error) {
+          setErrorMsg(`发送失败：${error.message}`)
+        } else {
+          // 捕获到错误 更新错误state
+          setErrorMsg('消息发送失败，请稍后重试')
+        }
       }
     } finally {
       // 7.无论成功失败，都取消加载状态
       setIsLoading(false)
-      // 流式全部完成（成功/失败都会走到finally）
-      // 如果临时ai消息存在 把完整答案归档进正式历史 然后清空临时占位
+      // 生成结束，按钮变回发送
+      setIsGenerating(false)
+      // 清空取消函数，这次的失效了
+      cancelRef.current = null
+      // 已收到的文字归档
       if (fullAiContent.length > 0) {
         const completeAiMsg: ChatMessage = {
           id: aiMsgId,
@@ -132,6 +151,14 @@ const App: React.FC = () => {
     // 清空错误消息
     setErrorMsg('')
   }
+
+  // 停止生成函数
+  const handleStop = () => {
+    // 如果有取消方法，就调用它
+    if (cancelRef.current) {
+      cancelRef.current()
+    }
+  }
   return (
     <>
       {/* 外层全屏容器：纵向 flex 布局 */}
@@ -152,7 +179,7 @@ const App: React.FC = () => {
         {errorMsg && <div style={{ color: 'red', textAlign: 'center', padding: '4px' }}>{errorMsg}</div>}
 
         {/* 输入框 */}
-        <ChatInput loading={isLoading} onSend={handleSend} />
+        <ChatInput loading={isLoading} onSend={handleSend} isGenerating={isGenerating} onStop={handleStop} />
       </div >
     </>
   )

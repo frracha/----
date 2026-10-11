@@ -94,6 +94,7 @@
     background: #1e1e1e;
     border-radius: 8px;
     overflow-x: auto;
+    position: relative;
 }
 
 .chat-message-bubble.assistant pre code {
@@ -121,4 +122,56 @@
 
 .chat-message-bubble.assistant a:hover {
     text-decoration: underline;
+}
+
+/* 代码语法高亮 */
+/* 关键字 */
+.chat-message-bubble.assistant pre code .hljs-keywored {
+    color: #c678dd;
+}
+
+/* 字符串 */
+.chat-message-bubble.assistant pre code .hljs-string {
+    color: #98c379;
+}
+
+/* 注释 */
+.chat-message-bubble.assistant pre code .hljs-comment {
+    color: #5c6370;
+    font-style: italic;
+}
+
+/* 函数名 */
+.chat-message-bubble.assistant pre code .hljs-title {
+    color: #61afef;
+}
+
+/* 数字：橙色 */
+.chat-message-bubble.assistant pre code .hljs-number {
+    color: #d19a66;
+}
+
+/* 运算符：青色 */
+.chat-message-bubble.assistant pre code .hljs-operator {
+    color: #56b6c2;
+}
+
+/* 复制按钮 */
+.chat-message-bubble.assistant .copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: #abb2bf;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.chat-message-bubble.assistant .copy-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
 }

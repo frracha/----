@@ -54,6 +54,28 @@ const App: React.FC = () => {
   // 是否正在生成中，控制按钮显示
   const [isGenerating, setIsGenerating] = useState(false)
 
+  // 背景颜色主题初始化
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    // useState可以传入回调,页面初始化只执行一次,读取本地存储
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme === 'dark') {
+      return 'dark'
+    }
+    return 'light'
+  })
+
+  //监听theme变化
+  useEffect(() => {
+    // 根节点
+    const rootHtml = document.documentElement
+    if (theme === 'dark') {
+      rootHtml.classList.add('theme-dark')
+    } else {
+      rootHtml.classList.remove('theme-dark')
+    }
+    // 存入本地存储,刷新保留
+    localStorage.setItem('theme', theme)
+  }, [theme])
 
   // 监听messages变化 自动保存到localStorage
   useEffect(() => {
@@ -159,6 +181,11 @@ const App: React.FC = () => {
       cancelRef.current()
     }
   }
+
+  // 切换主题背景函数
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+  }
   return (
     <>
       {/* 外层全屏容器：纵向 flex 布局 */}
@@ -168,8 +195,13 @@ const App: React.FC = () => {
           <h2 className="app-title">
             AI智能对话助手
           </h2>
-          {/* 清空按钮 */}
-          <button className="clear-btn" onClick={handleClearChat} disabled={isLoading}>清空聊天</button>
+          {/* 按钮组: 主题切换 + 清空按钮 */}
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <button className='theme-btn' onClick={toggleTheme}>
+              {theme === 'light' ? '切换深色' : '切换浅色'}
+            </button>
+            <button className="clear-btn" onClick={handleClearChat} disabled={isLoading}>清空聊天</button>
+          </div>
         </div >
 
         {/* 消息列表组件：把全局状态通过 props 传下去 */}

@@ -1,8 +1,10 @@
 /* 列表容器 */
 .chat-list {
     flex: 1;
+    min-height: 0;
     /* 内容没有超出元素高度时：没有滚动条，和正常一样内容超出元素高度时：在元素内部出现垂直滚动条，元素自身的高度保持不变，内容在内部滚动。*/
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 20px;
     background-color: var(--page-bg);
 }

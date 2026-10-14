@@ -13,32 +13,34 @@ interface Props {
 // 3.定义组件
 const ChatMessageList: React.FC<Props> = ({ messages, loading }) => {
     // 4.创建ref 用于标记列表底部的DOM元素
-    const bottomRef = useRef<HTMLDivElement>(null)
+    const listRef = useRef<HTMLDivElement>(null)
 
     //    5.副作用：消息/加载状态变化时 自动滚动到底部
     useEffect(() => {
-        if (messages.length === 0) return
-        // 获取最后一条消息
-        // `at()` 是数组方法: - `arr.at(0)` → 数组第 1 个元素  `arr.at(-1)` → 取数组最后一项元素，等价于 `arr[arr.length - 1]`
-        const lastMsg = messages.at(-1)
-        // 只有最后一条消息是AI助手 才执行滚动到底
-        if (lastMsg?.role === 'assistant') {
-            bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+        const dom = listRef.current
+        if (!dom) return
+
+        // 在流式输出时，连续增量更新会触发多次渲染；
+        // 只要用户接近底部，就保持“跟随最新消息”。
+        const isUserAtBottom = dom.clientHeight + dom.scrollTop >= dom.scrollHeight - 20
+        if (isUserAtBottom) {
+            requestAnimationFrame(() => {
+                dom.scrollTo({
+                    top: dom.scrollHeight,
+                    behavior: 'smooth'
+                })
+            })
         }
-    }, [messages])
+    }, [messages, loading])
 
     // 6.渲染页面
     return (
 
-        <div className="chat-list">
+        <div ref={listRef} className="chat-list">
             {/* 遍历消息列表 渲染每条消息气泡 */}
             {messages.map(msg => (
                 <ChatMessageItem key={msg.id} message={msg} />
             ))}
-
-
-            {/* 滚动锚点：标记列表最底部 */}
-            <div ref={bottomRef} />
         </div>
 
     )

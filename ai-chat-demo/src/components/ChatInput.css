@@ -21,6 +21,8 @@
     outline: none;
     color: var(--text-primary);
     background-color: var(--page-bg);
+    /* 禁止拖动右下角拉伸输入框大小 */
+    resize: none;
 }
 
 /* 输入框聚焦状态：高亮边框，去掉原生蓝色轮廓 */

@@ -211,7 +211,7 @@ const App: React.FC = () => {
         {errorMsg && <div style={{ color: 'red', textAlign: 'center', padding: '4px' }}>{errorMsg}</div>}
 
         {/* 输入框 */}
-        <ChatInput loading={isLoading} onSend={handleSend} isGenerating={isGenerating} onStop={handleStop} />
+        <ChatInput onSend={handleSend} isGenerating={isGenerating} onStop={handleStop} />
       </div >
     </>
   )

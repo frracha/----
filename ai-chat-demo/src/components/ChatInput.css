@@ -23,6 +23,9 @@
     background-color: var(--page-bg);
     /* 禁止拖动右下角拉伸输入框大小 */
     resize: none;
+    min-height: 44px;
+    max-height: 140px;
+    transition: height 0.15s ease;
 }
 
 /* 输入框聚焦状态：高亮边框，去掉原生蓝色轮廓 */

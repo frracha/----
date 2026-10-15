@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ChatInput.css'
 
 interface Props {
@@ -44,10 +44,29 @@ const ChatInput: React.FC<Props> = ({ onSend, isGenerating, onStop }) => {
         }
     }
 
-    const canSend = !isGenerating && inputValue.trim() === ''
+    const textAreaRef = useRef<HTMLTextAreaElement>(null)
+    const TEXTAREA_MAX_HEIGHT = 140
+    // 自适应高度副作用
+    useEffect(() => {
+        const dom = textAreaRef.current
+        if (!dom) return
+        // 关键第一步：重置为auto，释放高度锁死（手动设置高度，浏览器会当作“显式高度”，出现高度锁死）
+        dom.style.height = 'auto'
+        // 获取内容高度
+        const contentHeight = dom.scrollHeight
+        if (contentHeight <= TEXTAREA_MAX_HEIGHT) {
+            dom.style.height = `${contentHeight}px`
+        } else {
+            dom.style.height = `${TEXTAREA_MAX_HEIGHT}px`
+        }
+    }, [inputValue])
+
+
+    const isSendDisabled = !isGenerating && inputValue.trim() === ''
     return (
         <div className='chat-input-container'>
             <textarea className='chat-input'
+                ref={textAreaRef}
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={handleKeyDown}
@@ -57,7 +76,7 @@ const ChatInput: React.FC<Props> = ({ onSend, isGenerating, onStop }) => {
             {/* 所以 `onClick` 里的 `!loading` 判断是完全冗余的，永远走不到。 */}
             <button className='send-btn'
                 onClick={handleClick}
-                disabled={canSend}>
+                disabled={isSendDisabled}>
                 {isGenerating ? '停止' : '发送'}
             </button>
         </div>

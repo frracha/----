@@ -54,6 +54,9 @@ const App: React.FC = () => {
   // 是否正在生成中，控制按钮显示
   const [isGenerating, setIsGenerating] = useState(false)
 
+  // 清空确认弹窗显示状态
+  const [showClearModal, setShowClearModal] = useState(false)
+
   // 背景颜色主题初始化
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     // useState可以传入回调,页面初始化只执行一次,读取本地存储
@@ -188,6 +191,31 @@ const App: React.FC = () => {
   }
   return (
     <>
+      {/* 弹窗 */}
+      {showClearModal && (
+        <div className='modal-mask' onClick={() => setShowClearModal(false)}>
+          {/* 叫停事件冒泡 */}
+          <div className='modal-box' onClick={(e) => e.stopPropagation()}>
+            <div className='modal-title'>提示</div>
+            <div className='modal-desc'>确定清空全部聊天记录吗？该操作不可恢复！</div>
+            <div className='modal-btn-group'>
+              <button className='modal-cancel-btn'
+                onClick={() => setShowClearModal(false)}
+              >
+                取消
+              </button>
+              <button className='modal-confirm-btn'
+                onClick={() => {
+                  handleClearChat()
+                  setShowClearModal(false)
+                }}
+              >
+                确认清空
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* 外层全屏容器：纵向 flex 布局 */}
       <div className="app-container">
         {/* 顶部标题栏 */}
@@ -200,7 +228,7 @@ const App: React.FC = () => {
             <button className='theme-btn' onClick={toggleTheme}>
               {theme === 'light' ? '切换深色' : '切换浅色'}
             </button>
-            <button className="clear-btn" onClick={handleClearChat} disabled={isLoading}>清空聊天</button>
+            <button className="clear-btn" onClick={() => setShowClearModal(true)} disabled={isLoading}>清空聊天</button>
           </div>
         </div >
 

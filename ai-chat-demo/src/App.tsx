@@ -11,7 +11,8 @@ const App: React.FC = () => {
     {
       id: 1,
       role: 'assistant',
-      content: '你好！我是AI助手，有什么可以帮你的吗？'
+      content: '你好！我是AI助手，有什么可以帮你的吗？',
+      isWelcome: true
     }
   ]
 

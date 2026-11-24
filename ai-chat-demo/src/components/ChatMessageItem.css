@@ -39,6 +39,8 @@
     color: var(--assistant-bubble-text);
     /* AI气泡内 Markdown 样式 */
     line-height: 1.7;
+    position: relative;
+    padding-top: 32px;
 }
 
 /* #endregion */
@@ -166,21 +168,31 @@
 /* #region 复制按钮*/
 .chat-message-bubble.assistant .copy-btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
     padding: 4px 10px;
     font-size: 12px;
-    color: #abb2bf;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+    background: var(--assistant-bubble-bg);
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.2s;
 }
 
+/* 整条消息复制按钮：气泡右上角 */
+.copy-btn.copy-all-btn {
+    top: 8px;
+    right: 8px;
+}
+
+/* 代码块里面的复制按钮，改成右下角，避开上面的按钮 */
+.chat-message-bubble.assistant pre .copy-btn {
+    top: auto;
+    bottom: 8px;
+    right: 8px;
+}
+
 .chat-message-bubble.assistant .copy-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
+    background: var(--assistant-bubble-bg);
 }
 
 /* #endregion */

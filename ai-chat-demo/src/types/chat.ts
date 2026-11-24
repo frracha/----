@@ -3,6 +3,7 @@ export interface ChatMessage {
     id: number;
     role: 'user' | 'assistant';
     content: string;
+    isWelcome?: boolean;
 }
 
 // 发送给AI的请求格式
